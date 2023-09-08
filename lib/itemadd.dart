@@ -34,6 +34,7 @@ class Itemadd extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xff2999AD),
       appBar: AppBar(
         title: Text(type.name.toUpperCase()),
         actions: [
@@ -53,6 +54,7 @@ class Itemadd extends StatelessWidget {
                       Radius.elliptical(20, 20),
                     ),
                   ),
+                  fillColor: Colors.black38,
                 ),
               ),
               const SizedBox(
@@ -70,9 +72,9 @@ class Itemadd extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 50,
-              ),
+              // const SizedBox(
+              //   height: 50,
+              // ),
               ElevatedButton(onPressed: () {
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
