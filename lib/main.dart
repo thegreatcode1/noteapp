@@ -54,7 +54,15 @@ class MyHomePage extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (ctx) {
+                return Itemadd(type: Actiontype.addnote);
+              },
+            ),
+          );
+        },
         label: const Text(
           "ADD NOTE",
           style: TextStyle(color: Colors.white70),
@@ -88,7 +96,7 @@ class NoteItem extends StatelessWidget {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
               builder: (ctx) {
-                return const Itemadd();
+                return  Itemadd(type: Actiontype.editnote);
               },
             ),
           );
@@ -109,7 +117,7 @@ class NoteItem extends StatelessWidget {
                       title ?? "",
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
-                          color: Colors.black,
+                          color: Color.fromARGB(255, 255, 255, 255),
                           fontSize: 30,
                           fontWeight: FontWeight.bold),
                     ),
@@ -128,7 +136,7 @@ class NoteItem extends StatelessWidget {
                 maxLines: 10,
                 style: const TextStyle(
                   overflow: TextOverflow.ellipsis,
-                  color: Colors.black,
+                  color: Color.fromARGB(255, 255, 255, 255),
                   fontSize: 14,
                 ),
               )
