@@ -22,7 +22,7 @@ class Itemadd extends StatelessWidget {
       onPressed: () {
         switch (type) {
           case Actiontype.addnote:
-          savenote();
+            savenote();
             //add note
             break;
           case Actiontype.editnote:
@@ -79,9 +79,6 @@ class Itemadd extends StatelessWidget {
                   ),
                 ),
               ),
-              // const SizedBox(
-              //   height: 50,
-              // ),
               ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).pushReplacement(
@@ -101,11 +98,11 @@ class Itemadd extends StatelessWidget {
     );
   }
 
-  Future<void> savenote() async{
+  Future<void> savenote() async {
     final title = _titlecontroller.text;
     final content = _contentcontroller.text;
 
-   final newnote= Notedata.create(
+    final newnote = Notedata.create(
       id: DateTime.now().microsecondsSinceEpoch.toString(),
       title: title,
       content: content,
