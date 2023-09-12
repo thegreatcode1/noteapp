@@ -16,11 +16,17 @@ final url = Url();
 class Notedb extends Apicalls {
   @override
   Future<Notedata?> createnote(Notedata value) async {
-    try{
-    final _result = await dio.post<Notedata>(url.baseurl + url.createnote);
-    return _result.data;
-    }
-    catch(e){
+    //error for missing a dynamic missing data
+    try {
+      final _result = await dio.post<Notedata>(
+        url.baseurl + url.createnote,
+        data: value.toJson(),
+      );
+      return _result.data;
+    } on DioError catch (e) {
+      print(e.response?.data);
+      print(e);
+    } catch (e) {
       print(e.toString());
     }
   }
