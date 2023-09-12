@@ -1,3 +1,1 @@
-abstract class Apicalls {
-  
-}
+abstract class Apicalls {}

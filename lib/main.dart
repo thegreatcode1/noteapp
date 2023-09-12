@@ -96,7 +96,7 @@ class NoteItem extends StatelessWidget {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
               builder: (ctx) {
-                return  Itemadd(type: Actiontype.editnote);
+                return Itemadd(type: Actiontype.editnote);
               },
             ),
           );

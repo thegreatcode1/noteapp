@@ -75,15 +75,18 @@ class Itemadd extends StatelessWidget {
               // const SizedBox(
               //   height: 50,
               // ),
-              ElevatedButton(onPressed: () {
-                Navigator.of(context).pushReplacement(
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
                       builder: (ctx) {
                         return const MyHomePage(title: "");
                       },
                     ),
                   );
-              }, child: const Text("back"),),
+                },
+                child: const Text("back"),
+              ),
             ],
           ),
         ),
