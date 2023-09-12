@@ -16,8 +16,13 @@ final url = Url();
 class Notedb extends Apicalls {
   @override
   Future<Notedata?> createnote(Notedata value) async {
+    try{
     final _result = await dio.post<Notedata>(url.baseurl + url.createnote);
     return _result.data;
+    }
+    catch(e){
+      print(e.toString());
+    }
   }
 
   @override
