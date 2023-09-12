@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:notes/data/getallnoterespo/getallnoterespo.dart';
 import 'package:notes/data/notedata/notedata.dart';
@@ -33,8 +31,7 @@ class Notedb extends Apicalls {
     final _result = await dio.get<Getallnoterespo>(url.baseurl + url.getnote);
     if (_result.data == null) {
       return [];
-    }
-    else{
+    } else {
       return _result.data!.data;
     }
   }

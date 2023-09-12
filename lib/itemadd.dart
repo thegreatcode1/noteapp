@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:notes/data/data.dart';
+import 'package:notes/data/notedata/notedata.dart';
 import 'package:notes/main.dart';
 
 enum Actiontype {
@@ -20,6 +22,7 @@ class Itemadd extends StatelessWidget {
       onPressed: () {
         switch (type) {
           case Actiontype.addnote:
+          savenote();
             //add note
             break;
           case Actiontype.editnote:
@@ -31,6 +34,8 @@ class Itemadd extends StatelessWidget {
       icon: const Icon(Icons.save),
       label: const Text("save"));
 
+  final _titlecontroller = TextEditingController();
+  final _contentcontroller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,6 +52,7 @@ class Itemadd extends StatelessWidget {
           child: Column(
             children: [
               TextFormField(
+                controller: _titlecontroller,
                 decoration: const InputDecoration(
                   hintText: "title",
                   border: OutlineInputBorder(
@@ -61,6 +67,7 @@ class Itemadd extends StatelessWidget {
                 height: 20,
               ),
               TextFormField(
+                controller: _contentcontroller,
                 maxLines: 10,
                 maxLength: 100,
                 decoration: const InputDecoration(
@@ -92,5 +99,17 @@ class Itemadd extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> savenote() async{
+    final title = _titlecontroller.text;
+    final content = _contentcontroller.text;
+
+   final newnote= Notedata.create(
+      id: DateTime.now().microsecondsSinceEpoch.toString(),
+      title: title,
+      content: content,
+    );
+    Notedb().createnote(newnote);
   }
 }
