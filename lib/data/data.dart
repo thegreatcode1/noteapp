@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:notes/data/getallnoterespo/getallnoterespo.dart';
 import 'package:notes/data/notedata/notedata.dart';
@@ -18,11 +20,12 @@ class Notedb extends Apicalls {
   Future<Notedata?> createnote(Notedata value) async {
     //error for missing a dynamic missing data
     try {
-      final _result = await dio.post<Notedata>(
+      final _result = await dio.post(
         url.baseurl + url.createnote,
         data: value.toJson(),
       );
-      return _result.data;
+      final _resultAsfronjson=jsonDecode(_result.data);
+      return Notedata.fromJson(_resultAsfronjson as Map<String,dynamic>);
     } on DioError catch (e) {
       print(e.response?.data);
       print(e);
