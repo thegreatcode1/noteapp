@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:notes/data/data.dart';
+import 'package:notes/data/notedata/notedata.dart';
 import 'package:notes/itemadd.dart';
 
 void main() {
@@ -23,18 +25,35 @@ class _MyAppState extends State<MyApp> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key, required this.title});
+class MyHomePage extends StatefulWidget {
+  MyHomePage({super.key, required this.title});
 
   final String title;
 
   @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  final List<Notedata> notelist = [];
+
+  @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) async {
+        final _notes = await Notedb().getallnote();
+        notelist.clear();
+        setState(() {
+          notelist.addAll(_notes.reversed);
+        });
+        //print(_notes);
+      },
+    );
     return Scaffold(
       backgroundColor: const Color(0xff2999AD), //#38ADAE
       body: SafeArea(
@@ -44,12 +63,15 @@ class MyHomePage extends StatelessWidget {
               crossAxisCount: 2,
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
-              children: List.generate(30, (index) {
+              children: List.generate(notelist.length, (index) {
+                final note = notelist[index];
+                if (note.id == null) {
+                  const SizedBox();
+                }
                 return NoteItem(
-                  id: index.toString(),
-                  title: 'farrari\n',
-                  content:
-                      'Ferrari S.p.A. is an Italian luxury sports car manufacturer based in Maranello, Italy.',
+                  id: note.id,
+                  title: note.title ?? 'ni title',
+                  content: note.content ?? 'no content',
                 );
               })),
         ),

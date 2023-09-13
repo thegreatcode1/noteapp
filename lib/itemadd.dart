@@ -101,7 +101,7 @@ class Itemadd extends StatelessWidget {
     final newNote = Notedb().createnote(newnote);
     if (newNote != null) {
       print("note saved");
-      Navigator.of(_scaffoldKey.currentContext!).pushReplacement(MaterialPageRoute(builder: (context) =>const MyHomePage(title: ""),));
+      Navigator.of(_scaffoldKey.currentContext!).pushReplacement(MaterialPageRoute(builder: (context) => MyHomePage(title: ""),));
     } else {
       print("note not saved");
     }
