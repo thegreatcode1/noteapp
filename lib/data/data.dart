@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:notes/data/getallnoterespo/getallnoterespo.dart';
 import 'package:notes/data/notedata/notedata.dart';
 import 'package:notes/data/uri.dart';
@@ -16,12 +18,22 @@ final dio = Dio();
 final url = Url();
 
 class Notedb extends Apicalls {
+// singleton ctration start
+  Notedb._internal();
+  static Notedb instance = Notedb._internal();
+  Notedb factory() {
+    return instance;
+  }
+// singleton end
+
   Notedb() {
     dio.options = BaseOptions(
       baseUrl: url.baseurl,
       responseType: ResponseType.plain,
     );
   }
+
+  ValueNotifier<List<Notedata>> notelistnotifier = ValueNotifier([]);
 
   @override
   Future<Notedata?> createnote(Notedata value) async {
@@ -54,10 +66,14 @@ class Notedb extends Apicalls {
   Future<List<Notedata>> getallnote() async {
     final _result = await dio.get(url.getnote);
     if (_result.data != null) {
-      final _resultasjson= jsonDecode(_result.data);
+      final _resultasjson = jsonDecode(_result.data);
       final getallnoteresp = Getallnoterespo.fromJson(_resultasjson);
+      notelistnotifier.value.clear();
+      notelistnotifier.value.addAll(getallnoteresp.data.reversed);
+      notelistnotifier.notifyListeners();
       return getallnoteresp.data;
     } else {
+      notelistnotifier.value.clear();
       return [];
     }
   }

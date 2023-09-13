@@ -8,14 +8,9 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -30,27 +25,17 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends StatelessWidget {
   MyHomePage({super.key, required this.title});
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  final List<Notedata> notelist = [];
-
-  @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) async {
-        final _notes = await Notedb().getallnote();
-        notelist.clear();
-        setState(() {
-          notelist.addAll(_notes.reversed);
-        });
+        await Notedb.instance.getallnote();
+
         //print(_notes);
       },
     );
@@ -58,23 +43,32 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: const Color(0xff2999AD), //#38ADAE
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: GridView.count(
-              crossAxisCount: 2,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              children: List.generate(notelist.length, (index) {
-                final note = notelist[index];
-                if (note.id == null) {
-                  const SizedBox();
-                }
-                return NoteItem(
-                  id: note.id,
-                  title: note.title ?? 'ni title',
-                  content: note.content ?? 'no content',
+            padding: const EdgeInsets.all(10.0),
+            child: ValueListenableBuilder(
+              valueListenable: Notedb.instance.notelistnotifier,
+              builder: (context, List<Notedata> newnote, _) {
+                return GridView.count(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  children: List.generate(
+                    newnote.length,
+                    (index) {
+                      final note =
+                          Notedb.instance.notelistnotifier.value[index];
+                      if (note.id == null) {
+                        const SizedBox();
+                      }
+                      return NoteItem(
+                        id: note.id,
+                        title: note.title ?? 'ni title',
+                        content: note.content ?? 'no content',
+                      );
+                    },
+                  ),
                 );
-              })),
-        ),
+              },
+            )),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
