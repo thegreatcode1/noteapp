@@ -32,12 +32,15 @@ class Notedb extends Apicalls {
         data: value.toJson(),
       );
       final _resultAsfronjson = jsonDecode(_result.data);
+      print(_resultAsfronjson);
       return Notedata.fromJson(_resultAsfronjson as Map<String, dynamic>);
     } on DioError catch (e) {
       print(e.response?.data);
       print(e);
+      return null;
     } catch (e) {
       print(e.toString());
+      return null;
     }
   }
 

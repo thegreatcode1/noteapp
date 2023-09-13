@@ -22,7 +22,7 @@ class Itemadd extends StatelessWidget {
       onPressed: () {
         switch (type) {
           case Actiontype.addnote:
-            savenote();
+            savenote(_scaffoldKey.currentContext!);
             //add note
             break;
           case Actiontype.editnote:
@@ -36,9 +36,12 @@ class Itemadd extends StatelessWidget {
 
   final _titlecontroller = TextEditingController();
   final _contentcontroller = TextEditingController();
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: const Color(0xff2999AD),
       appBar: AppBar(
         title: Text(type.name.toUpperCase()),
@@ -79,18 +82,6 @@ class Itemadd extends StatelessWidget {
                   ),
                 ),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (ctx) {
-                        return const MyHomePage(title: "");
-                      },
-                    ),
-                  );
-                },
-                child: const Text("back"),
-              ),
             ],
           ),
         ),
@@ -98,7 +89,7 @@ class Itemadd extends StatelessWidget {
     );
   }
 
-  Future<void> savenote() async {
+  Future<void> savenote(BuildContext context) async {
     final title = _titlecontroller.text;
     final content = _contentcontroller.text;
 
@@ -107,6 +98,12 @@ class Itemadd extends StatelessWidget {
       title: title,
       content: content,
     );
-    Notedb().createnote(newnote);
+    final newNote = Notedb().createnote(newnote);
+    if (newNote != null) {
+      print("note saved");
+      Navigator.of(_scaffoldKey.currentContext!).pushReplacement(MaterialPageRoute(builder: (context) =>const MyHomePage(title: ""),));
+    } else {
+      print("note not saved");
+    }
   }
 }
