@@ -52,9 +52,11 @@ class Notedb extends Apicalls {
 
   @override
   Future<List<Notedata>> getallnote() async {
-    final _result = await dio.get<Getallnoterespo>(url.baseurl + url.getnote);
+    final _result = await dio.get(url.getnote);
     if (_result.data == null) {
-      return [];
+      final _resultasjson= jsonDecode(_result.data);
+      final getallnoteresp = Getallnoterespo.fromJson(_resultasjson);
+      return getallnoteresp.data;
     } else {
       return _result.data!.data;
     }
