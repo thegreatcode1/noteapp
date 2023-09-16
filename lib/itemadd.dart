@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:notes/data/data.dart';
 import 'package:notes/data/notedata/notedata.dart';
@@ -29,6 +27,7 @@ class Itemadd extends StatelessWidget {
             break;
           case Actiontype.editnote:
             //updete note
+            saveeditednote();
             break;
           default:
         }
@@ -121,5 +120,17 @@ class Itemadd extends StatelessWidget {
     } else {
       print("note not saved");
     }
+  }
+
+  Future<void> saveeditednote() async {
+    final title = _titlecontroller.text;
+    final content = _contentcontroller.text;
+
+   final _editnote= Notedata.create(
+      id: id,
+      title: title,
+      content: content,
+    );
+    Notedb.instance.updatenote(_editnote);
   }
 }
