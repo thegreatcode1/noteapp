@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:notes/data/data.dart';
 import 'package:notes/data/notedata/notedata.dart';
@@ -40,6 +42,17 @@ class Itemadd extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
+    if (type == Actiontype.editnote) {
+      if (id == null) {
+        Navigator.of(context).pop();
+      }
+      final note = Notedb.instance.getnoteid(id!);
+      if (note == null) {
+        Navigator.of(context).pop();
+      }
+      _titlecontroller.text = note!.title ?? 'no title';
+      _contentcontroller.text = note.content ?? 'no content';
+    }
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: const Color(0xff2999AD),
@@ -101,7 +114,10 @@ class Itemadd extends StatelessWidget {
     final newNote = Notedb().createnote(newnote);
     if (newNote != null) {
       print("note saved");
-      Navigator.of(_scaffoldKey.currentContext!).pushReplacement(MaterialPageRoute(builder: (context) => MyHomePage(title: ""),));
+      Navigator.of(_scaffoldKey.currentContext!)
+          .pushReplacement(MaterialPageRoute(
+        builder: (context) => MyHomePage(title: ""),
+      ));
     } else {
       print("note not saved");
     }
