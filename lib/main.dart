@@ -143,7 +143,9 @@ class NoteItem extends StatelessWidget {
                     ),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Notedb.instance.deletenote(id!);
+                    },
                     icon: const Icon(
                       Icons.delete,
                       color: Colors.red,
