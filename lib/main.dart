@@ -47,6 +47,11 @@ class MyHomePage extends StatelessWidget {
             child: ValueListenableBuilder(
               valueListenable: Notedb.instance.notelistnotifier,
               builder: (context, List<Notedata> newnote, _) {
+                if (newnote.isEmpty) {
+                  return const Center(
+                    child: Text("note is empty"),
+                  );
+                }
                 return GridView.count(
                   crossAxisCount: 2,
                   crossAxisSpacing: 10,
@@ -60,7 +65,7 @@ class MyHomePage extends StatelessWidget {
                         const SizedBox();
                       }
                       return NoteItem(
-                        id: note.id,
+                        id: note.id!,
                         title: note.title ?? 'ni title',
                         content: note.content ?? 'no content',
                       );

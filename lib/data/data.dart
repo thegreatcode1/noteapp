@@ -58,16 +58,16 @@ class Notedb extends Apicalls {
 
   @override
   Future<void> deletenote(String id) async {
-    final _result = dio.delete(url.deletenote.replaceFirst('{id}', id));
-    if (_result == null) {
+    final _result = await dio.delete(url.deletenote.replaceFirst('{id}', id));
+    if (_result.data == null) {
       return;
     }
     final _index = notelistnotifier.value.indexWhere((note) => note.id == id);
-  if(_index==-1){
-    return;
-  }
-  notelistnotifier.value.removeAt(_index);
-  notelistnotifier.notifyListeners();
+    if (_index == -1) {
+      return;
+    }
+    notelistnotifier.value.removeAt(_index);
+    notelistnotifier.notifyListeners();
   }
 
   @override
