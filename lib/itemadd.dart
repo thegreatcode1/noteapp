@@ -27,7 +27,7 @@ class Itemadd extends StatelessWidget {
             break;
           case Actiontype.editnote:
             //updete note
-            saveeditednote();
+            saveeditednote(_scaffoldKey.currentContext!);
             break;
           default:
         }
@@ -101,6 +101,7 @@ class Itemadd extends StatelessWidget {
     );
   }
 
+//save note data collect func
   Future<void> savenote(BuildContext context) async {
     final title = _titlecontroller.text;
     final content = _contentcontroller.text;
@@ -122,15 +123,28 @@ class Itemadd extends StatelessWidget {
     }
   }
 
-  Future<void> saveeditednote() async {
+//edit data collect func
+  Future<void> saveeditednote(BuildContext context) async {
     final title = _titlecontroller.text;
     final content = _contentcontroller.text;
 
-   final _editnote= Notedata.create(
+    final _editnote = Notedata.create(
       id: id,
       title: title,
       content: content,
     );
-    Notedb.instance.updatenote(_editnote);
+    final _saveedit = await Notedb.instance.updatenote(_editnote);
+    if (_saveedit != null) {
+      print(" save edit");
+      Navigator.of(_scaffoldKey.currentContext!).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => MyHomePage(
+            title: "",
+          ),
+        ),
+      );
+    } else {
+      print("unable to save edit");
+    }
   }
 }

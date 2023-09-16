@@ -90,12 +90,24 @@ class Notedb extends Apicalls {
     return [];
   }
 
-
-
   @override
   Future<Notedata?> updatenote(Notedata value) async {
-    // TODO: implement updatenote
-    throw UnimplementedError();
+    final _result = await dio.put(url.updatenote, data: value.toJson());
+    if (_result == null) {
+      return null;
+    }
+    //find index
+    final index =
+        notelistnotifier.value.indexWhere((note) => note.id == value.id);
+    if (index == -1) {
+      return null;
+    }
+    //remove from index
+    notelistnotifier.value.removeAt(index);
+    //add note in that index
+notelistnotifier.value.insert(index, value);
+notelistnotifier.notifyListeners();
+return value;
   }
 
   Notedata? getnoteid(String id) {
