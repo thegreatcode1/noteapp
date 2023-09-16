@@ -64,23 +64,45 @@ class Notedb extends Apicalls {
 
   @override
   Future<List<Notedata>> getallnote() async {
-    final _result = await dio.get(url.getnote);
+    final completeUrl = '${url.baseurl}${url.getnote}';
+    final _result = await dio.get(completeUrl);
+
     if (_result.data != null) {
-      final _resultasjson = jsonDecode(_result.data);
-      final getallnoteresp = Getallnoterespo.fromJson(_resultasjson);
-      notelistnotifier.value.clear();
-      notelistnotifier.value.addAll(getallnoteresp.data.reversed);
-      notelistnotifier.notifyListeners();
-      return getallnoteresp.data;
-    } else {
-      notelistnotifier.value.clear();
-      return [];
+      if (_result.data is String) {
+        // If data is a string, parse it as JSON
+        final getallnoteresp =
+            Getallnoterespo.fromJson(jsonDecode(_result.data));
+        notelistnotifier.value.clear();
+        notelistnotifier.value.addAll(getallnoteresp.data.reversed);
+        notelistnotifier.notifyListeners();
+        return getallnoteresp.data;
+      } else if (_result.data is Map<String, dynamic>) {
+        // If data is already a map, proceed as usual
+        final getallnoteresp = Getallnoterespo.fromJson(_result.data);
+        notelistnotifier.value.clear();
+        notelistnotifier.value.addAll(getallnoteresp.data.reversed);
+        notelistnotifier.notifyListeners();
+        return getallnoteresp.data;
+      }
     }
+
+    notelistnotifier.value.clear();
+    return [];
   }
+
+
 
   @override
   Future<Notedata?> updatenote(Notedata value) async {
     // TODO: implement updatenote
     throw UnimplementedError();
+  }
+
+  Notedata? getnoteid(String id) {
+    try {
+      return notelistnotifier.value.firstWhere((note) => note.id == id);
+    } catch (_) {
+      return null;
+    }
   }
 }
