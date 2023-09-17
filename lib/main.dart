@@ -174,3 +174,4 @@ class NoteItem extends StatelessWidget {
     );
   }
 }
+// FINISHED.............................................
