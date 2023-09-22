@@ -112,13 +112,16 @@ class Itemadd extends StatelessWidget {
       content: content,
     );
     final newNote = Notedb().createnote(newnote);
+    // ignore: unnecessary_null_comparison
     if (newNote != null) {
+      // ignore: avoid_print
       print("note saved");
       Navigator.of(_scaffoldKey.currentContext!)
           .pushReplacement(MaterialPageRoute(
         builder: (context) => MyHomePage(title: ""),
       ));
     } else {
+      // ignore: avoid_print
       print("note not saved");
     }
   }
@@ -128,13 +131,16 @@ class Itemadd extends StatelessWidget {
     final title = _titlecontroller.text;
     final content = _contentcontroller.text;
 
+    // ignore: no_leading_underscores_for_local_identifiers
     final _editnote = Notedata.create(
       id: id,
       title: title,
       content: content,
     );
+    // ignore: no_leading_underscores_for_local_identifiers
     final _saveedit = await Notedb.instance.updatenote(_editnote);
     if (_saveedit != null) {
+      // ignore: avoid_print
       print(" save edit");
       Navigator.of(_scaffoldKey.currentContext!).pushReplacement(
         MaterialPageRoute(
@@ -144,6 +150,7 @@ class Itemadd extends StatelessWidget {
         ),
       );
     } else {
+      // ignore: avoid_print
       print("unable to save edit");
     }
   }

@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
+  // ignore: prefer_const_constructors_in_immutables
   MyHomePage({super.key, required this.title});
 
   final String title;

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -39,18 +38,24 @@ class Notedb extends Apicalls {
   Future<Notedata?> createnote(Notedata value) async {
     //error for missing a dynamic missing data
     try {
+      // ignore: no_leading_underscores_for_local_identifiers
       final _result = await dio.post(
         url.createnote,
         data: value.toJson(),
       );
+      // ignore: no_leading_underscores_for_local_identifiers
       final _resultAsfronjson = jsonDecode(_result.data);
+      // ignore: avoid_print
       print(_resultAsfronjson);
       return Notedata.fromJson(_resultAsfronjson as Map<String, dynamic>);
     } on DioError catch (e) {
+      // ignore: avoid_print
       print(e.response?.data);
+      // ignore: avoid_print
       print(e);
       return null;
     } catch (e) {
+      // ignore: avoid_print
       print(e.toString());
       return null;
     }
@@ -58,21 +63,25 @@ class Notedb extends Apicalls {
 
   @override
   Future<void> deletenote(String id) async {
+    // ignore: no_leading_underscores_for_local_identifiers
     final _result = await dio.delete(url.deletenote.replaceFirst('{id}', id));
     if (_result.data == null) {
       return;
     }
+    // ignore: no_leading_underscores_for_local_identifiers
     final _index = notelistnotifier.value.indexWhere((note) => note.id == id);
     if (_index == -1) {
       return;
     }
     notelistnotifier.value.removeAt(_index);
+    // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
     notelistnotifier.notifyListeners();
   }
 
   @override
   Future<List<Notedata>> getallnote() async {
     final completeUrl = '${url.baseurl}${url.getnote}';
+    // ignore: no_leading_underscores_for_local_identifiers
     final _result = await dio.get(completeUrl);
 
     if (_result.data != null) {
@@ -82,6 +91,7 @@ class Notedb extends Apicalls {
             Getallnoterespo.fromJson(jsonDecode(_result.data));
         notelistnotifier.value.clear();
         notelistnotifier.value.addAll(getallnoteresp.data.reversed);
+        // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
         notelistnotifier.notifyListeners();
         return getallnoteresp.data;
       } else if (_result.data is Map<String, dynamic>) {
@@ -89,6 +99,7 @@ class Notedb extends Apicalls {
         final getallnoteresp = Getallnoterespo.fromJson(_result.data);
         notelistnotifier.value.clear();
         notelistnotifier.value.addAll(getallnoteresp.data.reversed);
+        // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
         notelistnotifier.notifyListeners();
         return getallnoteresp.data;
       }
@@ -100,7 +111,9 @@ class Notedb extends Apicalls {
 
   @override
   Future<Notedata?> updatenote(Notedata value) async {
+    // ignore: no_leading_underscores_for_local_identifiers
     final _result = await dio.put(url.updatenote, data: value.toJson());
+    // ignore: unnecessary_null_comparison
     if (_result == null) {
       return null;
     }
@@ -114,6 +127,7 @@ class Notedb extends Apicalls {
     notelistnotifier.value.removeAt(index);
     //add note in that index
     notelistnotifier.value.insert(index, value);
+    // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
     notelistnotifier.notifyListeners();
     return value;
   }
